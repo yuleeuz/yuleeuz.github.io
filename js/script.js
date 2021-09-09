@@ -1,4 +1,22 @@
+gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(Draggable);
 
+
+const Auswahl = Draggable.create(
+	'#Emblem',
+	{
+		type: 'rotation',
+		onDrag: function() {
+				console.log(this.rotation)}
+	}
+);
+
+
+
+
+
+
+/*
 const Schwingen = gsap.timeline(
 	{
 		paused: true
@@ -22,4 +40,4 @@ EmblemAnstossen.addEventListener('mouseover', () => {
 EmblemAnstossen.addEventListener('touchstart', () => {
 	Schwingen.play();
 	Schwingen.restart();
-})
+})*/
