@@ -1,37 +1,52 @@
 
-#Emblem {
-
-	z-index: 2;
-	position: absolute;
-
-	top: 50%;
-	left: 50%;
-
-	transform: translate(-50%, -50%);
-	width: 30%;
-}
-
-
-#Wheel {
-
-	z-index: 1;
-	position: absolute;
-
-	top: 50%;
-	left: 50%;
-
-	transform: translate(-50%, -50%);
-	width: 30%;
-}
-
 #Willkommen {
 
 	z-index: 0;
+
+	top: 50%;
+	left: 50%;
+	width: 50%;
+
 	position: absolute;
+	transform: translate(-50%, -50%);
+}
+
+#Rad {
+
+	z-index: 1;
+
+	top: 50%;
+	left: 50%;
+	width: 30%;
+
+	position: absolute;
+	transform: translate(-50%, -50%);
+}
+
+#Emblem {
+
+	z-index: 3;
+
+	top: 50%;
+	left: 50%;
+	width: 30%;
+
+	position: absolute;
+	transform: translate(-50%, -50%);
+}
+
+#Griff {
+
+	background-color: transparent;
+	border-radius: 50%;
+
+	z-index: 2;
 
 	top: 50%;
 	left: 50%;
 
+	position: absolute;
 	transform: translate(-50%, -50%);
-	height: 100%;
+
+	display: inline-block;
 }
