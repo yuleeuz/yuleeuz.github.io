@@ -2,12 +2,27 @@ gsap.registerPlugin(ScrollTrigger);
 gsap.registerPlugin(Draggable);
 
 
+
+let Rotation = 0;
+const Rad = document.getElementById('#Wheel');
+
 const Auswahl = Draggable.create(
 	'#Emblem',
 	{
 		type: 'rotation',
 		onDrag: function() {
-				console.log(this.rotation)}
+			Rotation = this.rotation;
+			if( Rotation > 60 || Rotation < -60){
+				gsap.to('#Emblem', {
+					rotation: 0
+				})
+			} else {
+				console.log(Rotation);
+				console.log( (Rotation / ( 2 * Rotation )) );
+				gsap.to('#Wheel', {
+				})
+			}
+		}
 	}
 );
 
