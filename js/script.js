@@ -58,9 +58,18 @@ const Auswahl = Draggable.create(
 		onDrag: function() {
 			Drehung = this.rotation;
 
-			if( Drehung < 60 && Drehung > -60 ) {
+			if( Drehung < 60 && Drehung > 0 ) {
 
-				Widerstand += 1 / ( 0.5 * Drehung );
+
+				Widerstand = Ausrichtung + 2 * Math.log(Drehung);
+				console.log(Widerstand);
+
+				gsap.to( '#Rad', {  rotation: Widerstand  } );
+
+			} if ( Drehung > -60 && Drehung < 0 ) {
+
+				Widerstand = Ausrichtung + -2 * Math.log(-Drehung);
+				console.log(Widerstand);
 
 				gsap.to( '#Rad', {  rotation: Widerstand  } );
 
