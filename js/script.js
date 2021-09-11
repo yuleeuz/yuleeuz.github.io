@@ -9,6 +9,7 @@ const Willkommen = document.getElementById('Willkommen');
 const Rad = document.getElementById('Rad');
 const Griff = document.getElementById('Griff');
 
+const Digital = document.getElementById('Digital');
 
 
 Emblem.style.opacity = 0;
@@ -19,6 +20,9 @@ Rad.style.opacity = 0;
 let Breite = Rad.clientWidth;
 Griff.style.height = Breite + 'px';
 Griff.style.width = Breite + 'px';
+
+Digital.style.opacity = 0;
+
 
 
 
@@ -130,8 +134,16 @@ const Auswahl = Draggable.create(
 
 
 
+/*
 
-
-
-
-
+	const test = gsap.to( Digital, {
+	opacity: '1',
+	scrollTrigger: {
+		trigger: '#Inhalt',
+		start: 'bottom top',
+		end: 'bottom bottom',                    
+		toggleActions: 'none reverse play reverse',
+		scrub: true,
+		markers: true
+	}
+})*/
