@@ -21,7 +21,7 @@ let Breite = Rad.clientWidth;
 Griff.style.height = Breite + 'px';
 Griff.style.width = Breite + 'px';
 
-Digital.style.opacity = 0;
+Digital.style.opacity = 1;
 
 
 
