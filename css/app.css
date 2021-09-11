@@ -2,13 +2,28 @@
 
 @media screen and (orientation: landscape) {
 
+
+	#Inhalt {
+
+		height: 500px;
+
+	}
+
+	#Kern {
+
+		height: 100vh;
+
+		position: relative;
+
+	}
+
 	#Willkommen {
 
 		z-index: 0;
 
 		top: 50%;
 		left: 50%;
-		width: 50%;
+		width: 100%;
 
 		position: absolute;
 		transform: translate(-50%, -50%);
@@ -28,7 +43,7 @@
 
 	#Emblem {
 
-		z-index: 3;
+		z-index: 0;
 
 		top: 50%;
 		left: 50%;
@@ -71,13 +86,27 @@
 
 @media screen and (orientation: portrait) {
 
+	#Inhalt {
+
+		height: 500px;
+
+	}
+
+	#Kern {
+
+		height: 100vh;
+
+		position: relative;
+
+	}
+
 	#Willkommen {
 
 		z-index: 0;
 
 		top: 50%;
 		left: 50%;
-		height: 50%;
+		height: 100%;
 
 		position: absolute;
 		transform: translate(-50%, -50%);
