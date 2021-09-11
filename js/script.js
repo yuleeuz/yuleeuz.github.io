@@ -28,7 +28,7 @@ Digital.style.opacity = 0;
 
 window.addEventListener('load', function() {
 
-    window.scrollTo(0,500);
+    window.scrollTo(0,1000);
     console.log('Begruessung beginnt');
     Begruessung.play();
 
