@@ -28,9 +28,9 @@ Digital.style.opacity = 1;
 
 window.addEventListener('load', function() {
 
-    window.scrollTo(0,1000);
     console.log('Begruessung beginnt');
     Begruessung.play();
+	window.scrollTo(0,0);
 
 })
 
@@ -40,7 +40,7 @@ const Begruessung = gsap.timeline(
 	}
 )
 
-Begruessung
+Begruessung/*
 	.to(
 		'#Emblem', {
 			opacity: 1,
@@ -63,7 +63,7 @@ Begruessung
 		'#Willkommen', {
 			opacity: 0,
 			delay: 3.5
-		} )
+		} )*/
 	.to( 
 		'#Rad', {
 			opacity: 1,
@@ -76,14 +76,13 @@ Begruessung
 
 
 
-let Titel = 0; // 0 DIGITAL, 1 MATERIAL, 2 MENTAL
 
 let Drehung = 0; // Grad akuter Drehung
 let Ausrichtung = 0; // Grad des Rades
 let Widerstand = 0; // Grad gegen Widerstand akuter Drehung
-
-const Auswahl = Draggable.create(
-	'#Griff',{
+/*
+const AAuswahl = Draggable.create(
+	'',{
 		type: 'rotation',
 		onDrag: function() {
 
@@ -130,7 +129,90 @@ const Auswahl = Draggable.create(
 			}
 		
 	}
-);
+);*/
+
+
+
+
+let Titel = 0;  //  DIGITAL, MATERIAL, MENTAL
+let Senke = 0;
+let GradAkuteDrehung = 0;
+let Schwelle = 55;
+
+
+const Auswaehlen = Draggable.create(
+
+	'#Griff', {
+		type: 'rotation',
+
+		onDrag: function() {
+
+			GradAkuteDrehung = this.rotation - Senke;
+
+
+
+			if( GradAkuteDrehung < 0 ){
+				gsap.to( '#Rad', { rotation: ( Senke - 5* Math.log( -GradAkuteDrehung ) ) } )
+			} else{
+				gsap.to( '#Rad', { rotation: ( Senke + 5* Math.log( GradAkuteDrehung ) ), ease: 'power4' } )
+			}
+
+
+
+			if( GradAkuteDrehung > Schwelle ){
+
+				Senke += Schwelle;
+
+				if( Titel == 0 ) { Schwelle = 70; // MENTAL -ziehen-> DIGITAL
+				} else{ Schwelle = 55; }
+
+				Senke += Schwelle;
+				Titel = (Titel +1) %3;
+			
+			} if( GradAkuteDrehung < -Schwelle ){
+
+				Senke -= Schwelle;
+
+				if( Titel == 2 ) { Schwelle = 70; // MATERIAL -ziehen-> DIGITAL
+				} else{ Schwelle = 55; }
+
+				Senke -= Schwelle;
+				Titel = (Titel +2) %3;
+			}
+
+
+
+				console.log(Titel+' GradAkuteDrehung: '+GradAkuteDrehung+' Schwelle: '+Schwelle+' Senke: '+Senke)
+
+
+			
+		},
+
+		onRelease: function() {
+
+			gsap.to( ['#Griff', '#Rad'], {  rotation: Senke  } );
+			
+			GradAkuteDrehung = Senke;
+
+		}
+	}
+)
+
+const Auswahl = Draggable.create(
+
+	'#Zahnrad', {
+		type: 'rotation',
+
+		onDrag: function() {
+
+			
+
+
+
+			
+		}
+	}
+)
 
 
 

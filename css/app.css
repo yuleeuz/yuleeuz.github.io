@@ -10,12 +10,13 @@
 	}
 
 	#Ticket {
-
 		
 		top: 50%;
 		left: 50%;
 		width: 100%;
-		
+
+		position: absolute;
+		transform: translate(-50%, -50%);
 	}
 
 	#Kern {
@@ -68,6 +69,22 @@
 		border-radius: 50%;
 
 		z-index: 2;
+
+		top: 50%;
+		left: 50%;
+
+		position: absolute;
+		transform: translate(-50%, -50%);
+
+		display: inline-block;
+	}
+	
+	#Zahnrad {
+
+		background-color: transparent;
+		border-radius: 50%;
+
+		z-index: 0;
 
 		top: 50%;
 		left: 50%;
@@ -151,6 +168,22 @@
 		border-radius: 50%;
 
 		z-index: 2;
+
+		top: 50%;
+		left: 50%;
+
+		position: absolute;
+		transform: translate(-50%, -50%);
+
+		display: inline-block;
+	}
+
+	#Zahnrad {
+
+		background-color: transparent;
+		border-radius: 50%;
+
+		z-index: 0;
 
 		top: 50%;
 		left: 50%;
