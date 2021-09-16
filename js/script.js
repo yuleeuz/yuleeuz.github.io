@@ -152,9 +152,9 @@ const Auswaehlen = Draggable.create(
 
 
 			if( GradAkuteDrehung < 0 ){
-				gsap.to( '#Rad', { rotation: ( Senke - 5* Math.log( -GradAkuteDrehung ) ) } )
+				gsap.to( '#Rad', { rotation: ( Senke - 10* Math.log( -GradAkuteDrehung ) ) } )
 			} else{
-				gsap.to( '#Rad', { rotation: ( Senke + 5* Math.log( GradAkuteDrehung ) ), ease: 'power4' } )
+				gsap.to( '#Rad', { rotation: ( Senke + 10* Math.log( GradAkuteDrehung ) ) } )
 			}
 
 
@@ -190,7 +190,7 @@ const Auswaehlen = Draggable.create(
 
 		onRelease: function() {
 
-			gsap.to( ['#Griff', '#Rad'], {  rotation: Senke  } );
+			gsap.to( ['#Griff', '#Rad'], {  rotation: Senke, ease: 'power4'  } );
 			
 			GradAkuteDrehung = Senke;
 
