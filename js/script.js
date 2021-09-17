@@ -40,7 +40,7 @@ const Begruessung = gsap.timeline(
 	}
 )
 
-Begruessung
+Begruessung/*
 	.to(
 		'#Emblem', {
 			opacity: 1,
@@ -63,7 +63,7 @@ Begruessung
 		'#Willkommen', {
 			opacity: 0,
 			delay: 3.5
-		} )
+		} )*/
 	.to( 
 		'#Rad', {
 			opacity: 1,
