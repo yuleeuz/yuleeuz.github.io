@@ -42,6 +42,14 @@ const Begruessung = gsap.timeline(
 
 Begruessung
 	.to(
+		'#Willkommen', {
+			opacity: 0,
+			duration: 0.1,
+			onComplete: function() {
+				Willkommen.pause();
+			}
+		}, 0 )
+	.to(
 		'#Emblem', {
 			opacity: 1,
 			duration: 1,
@@ -54,7 +62,6 @@ Begruessung
 	.to(
 		'#Willkommen', {
 			opacity: 1,
-			delay: 1,
 			onComplete: function() {
 				Willkommen.play();
 			}
@@ -140,7 +147,7 @@ const Auswaehlen = Draggable.create(
 		end: 'bottom top',                    
 		toggleActions: 'reverse reverse reverse reverse',
 		scrub: true,
-		markers: true,
+//		markers: true,
 		                    onToggle: () => {console.log('h')}
 
 	}

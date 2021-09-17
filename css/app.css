@@ -15,7 +15,7 @@
 		left: 50%;
 		width: 100%;
 
-		position: absolute;
+		position: relative;
 		transform: translate(-50%, -50%);
 	}
 
@@ -116,6 +116,16 @@
 
 		height: 2000px;
 
+	}
+	
+	#Ticket {
+		
+		top: 100%;
+		left: 50%;
+		width: 100%;
+
+		position: relative;
+		transform: translate(-50%, -50%);
 	}
 
 	#Kern {
