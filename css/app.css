@@ -1,6 +1,9 @@
+// GLOBAL
 
 
-@media screen and (orientation: landscape) {
+	#Sicht {	
+		overflow: hidden	
+	}
 
 
 	#Inhalt {
@@ -8,6 +11,7 @@
 		height: 2000px;
 
 	}
+
 
 	#Ticket {
 		
@@ -19,6 +23,7 @@
 		transform: translate(-50%, -50%);
 	}
 
+
 	#Kern {
 
 		height: 100vh;
@@ -27,180 +32,81 @@
 
 	}
 
-	#Willkommen {
 
-		z-index: 0;
-
+	.Kern {
 		top: 50%;
-		left: 50%;
-		width: 100%;
+		left:  50%;
 
 		position: absolute;
 		transform: translate(-50%, -50%);
+		}
+
+		#Willkommen {
+			z-index: 0;
+		}
+
+		#Rad {
+			z-index: 1;
+		}
+
+		#Emblem {
+			z-index: 0;
+		}
+
+		.Griff {
+
+			background-color: transparent;
+			border-radius: 50%;
+
+			display: inline-block;
+		}
+			#Griff { z-index: 2; }
+			#NichtGriff { z-index: 3; }
+
+
+
+
+
+// ORIENTIERT
+
+
+@media screen and (orientation: landscape) {
+	#Sicht {	
+		overflow: hidden	
 	}
 
-	#Rad {
+		#Willkommen {	
+			width: 100%;	
+		}
 
-		z-index: 1;
+		#Rad {		
+			height: 50%;		
+		}
 
-		top: 50%;
-		left: 50%;
-		width: 50%;
+		#Emblem {	
+			height: 80%;		
+		}
 
-		position: absolute;
-		transform: translate(-50%, -50%);
-	}
-
-	#Emblem {
-
-		z-index: 0;
-
-		top: 50%;
-		left: 50%;
-		width: 50%;
-
-		position: absolute;
-		transform: translate(-50%, -50%);
-	}
-
-	#Griff {
-
-		background-color: transparent;
-		border-radius: 50%;
-
-		z-index: 2;
-
-		top: 50%;
-		left: 50%;
-
-		position: absolute;
-		transform: translate(-50%, -50%);
-
-		display: inline-block;
-	}
 	
-	#Zahnrad {
-
-		background-color: transparent;
-		border-radius: 50%;
-
-		z-index: 0;
-
-		top: 50%;
-		left: 50%;
-
-		position: absolute;
-		transform: translate(-50%, -50%);
-
-		display: inline-block;
-	}
 }
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 @media screen and (orientation: portrait) {
-
-	#Inhalt {
-
-		height: 2000px;
-
+	#Sicht {	
+		overflow: hidden	
 	}
+
+		#Willkommen {
+			height: 100%;
+		}
+
+		#Rad {
+			height: 50%;
+		}
+
+		#Emblem {
+			height: 50%;
+		}
 	
-	#Ticket {
-		
-		top: 100%;
-		left: 50%;
-		width: 100%;
-
-		position: relative;
-		transform: translate(-50%, -50%);
-	}
-
-	#Kern {
-
-		height: 100vh;
-
-		position: relative;
-
-	}
-
-	#Willkommen {
-
-		z-index: 0;
-
-		top: 50%;
-		left: 50%;
-		height: 100%;
-
-		position: absolute;
-		transform: translate(-50%, -50%);
-	}
-
-	#Rad {
-
-		z-index: 1;
-
-		top: 50%;
-		left: 50%;
-		height: 50%;
-
-		position: absolute;
-		transform: translate(-50%, -50%);
-	}
-
-	#Emblem {
-
-		z-index: 0;
-
-		top: 50%;
-		left: 50%;
-		height: 50%;
-
-		position: absolute;
-		transform: translate(-50%, -50%);
-	}
-
-	#Griff {
-
-		background-color: transparent;
-		border-radius: 50%;
-
-		z-index: 2;
-
-		top: 50%;
-		left: 50%;
-
-		position: absolute;
-		transform: translate(-50%, -50%);
-
-		display: inline-block;
-	}
-
-	#Zahnrad {
-
-		background-color: transparent;
-		border-radius: 50%;
-
-		z-index: 0;
-
-		top: 50%;
-		left: 50%;
-
-		position: absolute;
-		transform: translate(-50%, -50%);
-
-		display: inline-block;
-	}
 }

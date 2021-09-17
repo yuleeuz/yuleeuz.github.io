@@ -17,22 +17,33 @@ Willkommen.style.opacity = 0;
 
 Rad.style.opacity = 0;
 
-let Breite = Rad.clientWidth;
-Griff.style.height = Breite + 'px';
-Griff.style.width = Breite + 'px';
+function GriffBereiten(){
+
+	let Breite = Rad.clientWidth;
+	Griff.style.height = Breite + 'px';
+	Griff.style.width = Breite + 'px';
+	NichtGriff.style.height = (Breite - (Breite/100)*40) + 'px';
+	NichtGriff.style.width = (Breite - (Breite/100)*40) + 'px';	
+}
+
 
 Digital.style.opacity = 0;
-
-
 
 
 window.addEventListener('DOMContentLoaded', function() {
 
     console.log('Begruessung beginnt');
     Begruessung.play();
+    GriffBereiten();
 
-``}
+	}
 );
+
+window.addEventListener('resize', function() {
+	GriffBereiten();
+	}
+);
+
 
 const Begruessung = gsap.timeline(
 	{
