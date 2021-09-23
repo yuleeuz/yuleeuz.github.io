@@ -16,6 +16,10 @@ Emblem.style.opacity = 0;
 Willkommen.style.opacity = 0;
 
 Rad.style.opacity = 0;
+SterneA.style.opacity = 0;
+SterneB.style.opacity = 0;
+
+Digital.style.opacity = 0;
 
 function GriffBereiten(){
 
@@ -27,14 +31,13 @@ function GriffBereiten(){
 }
 
 
-Digital.style.opacity = 0;
 
 
 window.addEventListener('DOMContentLoaded', function() {
 
+    GriffBereiten();
     console.log('Begruessung beginnt');
     Begruessung.play();
-    GriffBereiten();
 
 	}
 );
@@ -61,16 +64,6 @@ Begruessung
 			}
 		}, 0 )
 	.to(
-		'#Emblem', {
-			opacity: 1,
-			duration: 1,
-		} )
-	.to(
-		'#Emblem', {
-			opacity: 0,
-			duration: 1,
-		} )
-	.to(
 		'#Willkommen', {
 			opacity: 1,
 			onComplete: function() {
@@ -85,7 +78,13 @@ Begruessung
 	.to( 
 		'#Rad', {
 			opacity: 1,
-			duration: 2
+			duration: 3
+		} )
+	.to(
+		'.Sterne', {
+			opacity: 0.2,
+			duration: 5,
+			delay: -3,
 		} )
 
 
@@ -96,13 +95,18 @@ let GradAkuteDrehung = 0;
 let Schwelle = 55;
 
 
+gsap.set( '#Griff', {
+	xPercent: -50,
+	yPercent: -50,
+	left: '50%',
+	top: '50%'
+} )
+
 const Auswaehlen = Draggable.create(
 
-	'#Griff', {
-		type: 'rotation',
-
+	'#Griff', 
+	{	type: 'rotation',
 		onDrag: function() {
-
 			GradAkuteDrehung = this.rotation - Senke;
 
 			if( GradAkuteDrehung < -1 ){
@@ -114,7 +118,6 @@ const Auswaehlen = Draggable.create(
 				else gsap.to( '#Rad', { rotation: ( Senke + Math.log( GradAkuteDrehung ) ) } )
 //				console.log('Senke: '+Senke+' GradAkuteDrehung '+GradAkuteDrehung+' rotation '+this.rotation)
 			}
-
 			if( GradAkuteDrehung > Schwelle ){
 
 				Senke += Schwelle;
@@ -134,32 +137,31 @@ const Auswaehlen = Draggable.create(
 
 				Senke -= Schwelle;
 				Titel = (Titel +2) %3;
-			}
-			
+			}			
 		},
 
 		onRelease: function() {
+			gsap.to( '#Rad', {  rotation: Senke, ease: CustomEase.create("custom", "M0,0 C0,0 0.454,0.093 0.586,0.45 0.702,0.764 0.651,0.937 0.682,0.978 0.732,1.06 0.79,1.012 0.89,1 0.952,0.99 1,1 1,1"), duration: 1  } );
 
-			gsap.to( ['#Griff', '#Rad'], {  rotation: Senke, ease: CustomEase.create("custom", "M0,0 C0,0 0.454,0.093 0.586,0.45 0.702,0.764 0.651,0.937 0.682,0.978 0.732,1.06 0.79,1.012 0.89,1 0.952,0.99 1,1 1,1"), duration: 1  } );
+			gsap.set( '#Griff', {  rotation: Senke  })
 			GradAkuteDrehung = Senke; 
 		}
 	}
-)
+);
 
 
 
+	const g = gsap.fromTo( 
 
-
-	const test = gsap.fromTo( '#Digital', {opacity: 1}, {
-	opacity: 0,
-	scrollTrigger: {
-		trigger: '#Inhalt',
-		start: 'top top',
-		end: 'bottom top',                    
-		toggleActions: 'reverse reverse reverse reverse',
-		scrub: true,
-//		markers: true,
-		                    onToggle: () => {console.log('h')}
-
-	}
-})
+		'#Digital', 
+		{	opacity: 1  }, 
+		{	opacity: 0,
+				scrollTrigger: {
+					trigger: '#Inhalt',
+					start: 'top top',
+					end: 'bottom top',           
+					toggleActions: 'reverse reverse reverse reverse',
+					scrub: true,
+					//markers: true,
+				}
+	} );

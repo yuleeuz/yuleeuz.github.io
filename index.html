@@ -14,6 +14,7 @@
 	<body>
 		<div id = 'Sicht' style='width:100%'>
 
+			<span id = 'Vorhang'> </span>
 
 			<div id = 'Inhalt'>
 			
@@ -38,23 +39,31 @@
 
 			<div id = 'Kern'>
 				
-				<img class = 'Kern' 
-					id = 'Emblem' src = 'PieceOfMind.png'>
-				<img class = 'Kern' 
-					id = 'Rad' src = 'Rad.png'>
-				<video class = 'Kern' 
-					id = 'Willkommen'
+				<img id = 'Emblem'  
+					 src = 'PieceOfMind.png' class = 'Kern' >
+
+				<img id = 'Rad'
+					 src = 'Rad.png' class = 'Kern' >
+
+				<span id='Griff'
+					class = 'Kern' ></span>
+				<span id='NichtGriff'
+					class = 'Kern' ></span>
+
+				<video id = 'Willkommen'
+					class = 'Kern'
 					aria-hidden = 'true'
 					muted 
-					autoplay
+					autoplay = 'false'
 					playsinline >
-					<source src = 'Willkommen.mp4'>
+					<source src = 'Willkommen.mp4' >
 				</video>
-				<span class = 'Kern Griff' 
-					id='Griff'></span>
-				<span class = 'Kern Griff' 
-					id='NichtGriff'></span>
-			
+				<div id = Sterne>
+					<img id = 'SterneA' 
+						src='Sterne.png' class = 'Kern Sterne' >
+					<img id = 'SterneB'
+						 src='Sterne.png' class = 'Kern Sterne' >			
+				</div>
 			</div>
 
 

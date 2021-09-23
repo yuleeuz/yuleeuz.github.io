@@ -1,5 +1,8 @@
 // GLOBAL
 
+	#Vorhang {
+	}
+	
 
 	#Sicht {	
 		overflow: hidden	
@@ -34,15 +37,17 @@
 
 
 	.Kern {
+
 		top: 50%;
 		left:  50%;
 
 		position: absolute;
-		transform: translate(-50%, -50%);
+		transform: translate3d(-50%, -50%,0 );
 		}
 
 		#Willkommen {
 			z-index: 0;
+
 		}
 
 		#Rad {
@@ -53,16 +58,19 @@
 			z-index: 0;
 		}
 
-		.Griff {
-
+		#Griff {
+			z-index: 1;
 			background-color: transparent;
 			border-radius: 50%;
-
 			display: inline-block;
 		}
-			#Griff { z-index: 2; }
-			#NichtGriff { z-index: 3; }
-
+		#NichtGriff { 
+			z-index: 1;
+			background-color: transparent;
+			border-radius: 50%;
+			display: inline-block;
+			pointer-events: 'none';
+		}
 
 
 
@@ -70,29 +78,31 @@
 // ORIENTIERT
 
 
-@media screen and (orientation: landscape) {
+@media (orientation: landscape) {
 	#Sicht {	
 		overflow: hidden	
 	}
 
-		#Willkommen {	
-			width: 100%;	
+
+		#Willkommen {
+			height: 100%;
 		}
 
-		#Rad {		
-			height: 50%;		
+		#Rad {
+			width: 30%;
 		}
 
-		#Emblem {	
-			height: 80%;		
+		#Emblem {
+			height: 50%;
 		}
-
-	
+		.Sterne {
+			height: 200%;
+		}
 }
 
 
 
-@media screen and (orientation: portrait) {
+@media (orientation: portrait) {
 	#Sicht {	
 		overflow: hidden	
 	}
@@ -108,5 +118,8 @@
 		#Emblem {
 			height: 50%;
 		}
-	
+		.Sterne {
+			height: 200%;
+		}
+
 }
