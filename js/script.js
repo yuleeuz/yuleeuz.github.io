@@ -11,16 +11,6 @@ const Griff = document.getElementById('Griff');
 
 const Digital = document.getElementById('Digital');
 
-
-Emblem.style.opacity = 0;
-Willkommen.style.opacity = 0;
-
-Rad.style.opacity = 0;
-SterneA.style.opacity = 0;
-SterneB.style.opacity = 0;
-
-Digital.style.opacity = 0;
-
 function GriffBereiten(){
 
 	let Breite = Rad.clientWidth;
@@ -54,19 +44,12 @@ const Begruessung = gsap.timeline(
 	}
 )
 
-Begruessung
-	.to(
-		'#Willkommen', {
-			opacity: 0,
-			duration: 0.1,
-			onComplete: function() {
-				Willkommen.pause();
-			}
-		}, 0 )
-	.to(
+Begruessung/*
+	.set(
 		'#Willkommen', {
 			opacity: 1,
 			onComplete: function() {
+				Willkommen.currentTime = 0;
 				Willkommen.play();
 			}
 		} )
@@ -74,7 +57,7 @@ Begruessung
 		'#Willkommen', {
 			opacity: 0,
 			delay: 3.5
-		} )
+		} )*/
 	.to( 
 		'#Rad', {
 			opacity: 1,
@@ -82,7 +65,7 @@ Begruessung
 		} )
 	.to(
 		'.Sterne', {
-			opacity: 0.2,
+			opacity: 0.1,
 			duration: 5,
 			delay: -3,
 		} )
@@ -108,6 +91,10 @@ const Auswaehlen = Draggable.create(
 	{	type: 'rotation',
 		onDrag: function() {
 			GradAkuteDrehung = this.rotation - Senke;
+
+			gsap.to( '#SterneA', {
+				rotation: Senke +GradAkuteDrehung
+			} )
 
 			if( GradAkuteDrehung < -1 ){
 				if( GradAkuteDrehung < -30 ) gsap.to( '#Rad', { rotation: Senke + GradAkuteDrehung } )
@@ -142,7 +129,6 @@ const Auswaehlen = Draggable.create(
 
 		onRelease: function() {
 			gsap.to( '#Rad', {  rotation: Senke, ease: CustomEase.create("custom", "M0,0 C0,0 0.454,0.093 0.586,0.45 0.702,0.764 0.651,0.937 0.682,0.978 0.732,1.06 0.79,1.012 0.89,1 0.952,0.99 1,1 1,1"), duration: 1  } );
-
 			gsap.set( '#Griff', {  rotation: Senke  })
 			GradAkuteDrehung = Senke; 
 		}
