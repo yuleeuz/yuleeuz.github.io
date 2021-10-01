@@ -73,10 +73,10 @@ Begruessung/*
 
 
 let Titel = 0;  //  DIGITAL, MATERIAL, MENTAL
-let Senke = 0;
-let GradAkuteDrehung = 0;
-let Schwelle = 55;
-
+let DrehungRelativZuSenke = 0;
+let GradAkuteSternDrehung = 0;
+let Senke = 0; let Schwelle = 55;
+let SternenSenke = 0; let SternenSchwelle = 0;
 
 gsap.set( '#Griff', {
 	xPercent: -50,
@@ -90,47 +90,92 @@ const Auswaehlen = Draggable.create(
 	'#Griff', 
 	{	type: 'rotation',
 		onDrag: function() {
-			GradAkuteDrehung = this.rotation - Senke;
+			DrehungRelativZuSenke = this.rotation - Senke;
 
-			gsap.to( '#SterneA', {
-				rotation: Senke +GradAkuteDrehung
-			} )
+				let Lose = Senke + DrehungRelativZuSenke;
+				let SterneLose = SternenSenke + DrehungRelativZuSenke/Schwelle*SternenSchwelle;
+				let Gebremst = 0;
+				let SterneGebremst = 0;
 
-			if( GradAkuteDrehung < -1 ){
-				if( GradAkuteDrehung < -30 ) gsap.to( '#Rad', { rotation: Senke + GradAkuteDrehung } )
-				else gsap.to( '#Rad', { rotation: ( Senke - Math.log( -GradAkuteDrehung ) ) } )
-//				console.log('Senke: '+Senke+' GradAkuteDrehung '+GradAkuteDrehung+' rotation '+this.rotation)
-			} if ( GradAkuteDrehung > 1 ){
-				if( GradAkuteDrehung > 30 ) gsap.to( '#Rad', { rotation: Senke + GradAkuteDrehung  } )
-				else gsap.to( '#Rad', { rotation: ( Senke + Math.log( GradAkuteDrehung ) ) } )
-//				console.log('Senke: '+Senke+' GradAkuteDrehung '+GradAkuteDrehung+' rotation '+this.rotation)
+			if( DrehungRelativZuSenke < -1 ){
+
+				if( Titel == 0 ) SternenSchwelle = 15;
+				if( Titel == 1 ) SternenSchwelle = 9;
+				if( Titel == 2 ) SternenSchwelle = 6;
+ 
+				Gebremst = Senke - Math.log( -DrehungRelativZuSenke );
+
+				SterneGebremst = SternenSenke - Math.log( -DrehungRelativZuSenke/Schwelle*SternenSchwelle );
+
+
+			} if ( DrehungRelativZuSenke > 1 ){
+
+				if( Titel == 0 ) SternenSchwelle = 9;
+				if( Titel == 1 ) SternenSchwelle = 6;
+				if( Titel == 2 ) SternenSchwelle = 15;
+
+				Gebremst = Senke + Math.log( DrehungRelativZuSenke );
+
+				SterneGebremst = SternenSenke + Math.log( DrehungRelativZuSenke/Schwelle*SternenSchwelle );
+
 			}
-			if( GradAkuteDrehung > Schwelle ){
 
-				Senke += Schwelle;
+				if( DrehungRelativZuSenke > 30 || DrehungRelativZuSenke < -30 ) {
+					gsap.to( '#Rad', { rotation: Lose } );
+					gsap.to( '#SterneA', { rotation: SterneLose } );  }
+				else if( DrehungRelativZuSenke > 1 || DrehungRelativZuSenke < -1 ) { 
+					gsap.to( '#Rad', { rotation: Gebremst } );
+					gsap.to( '#SterneA', { rotation: SterneGebremst } );  }
 
-				if( Titel == 0 ) { Schwelle = 70; // MENTAL -ziehen-> DIGITAL
-				} else{ Schwelle = 55; }
 
-				Senke += Schwelle;
-				Titel = (Titel +1) %3;
-			
-			} if( GradAkuteDrehung < -Schwelle ){
+			if( DrehungRelativZuSenke < -Schwelle ){
+ 
+				Senke -= Schwelle;
+				SternenSenke -= 2*SternenSchwelle;
+
+				if( Titel == 2 ) {  Schwelle = 70; // MATERIAL -ziehen-> DIGITAL
+				} else{ Schwelle = 55;  }
 
 				Senke -= Schwelle;
 
-				if( Titel == 2 ) { Schwelle = 70; // MATERIAL -ziehen-> DIGITAL
-				} else{ Schwelle = 55; }
-
-				Senke -= Schwelle;
 				Titel = (Titel +2) %3;
-			}			
+
+			} if( DrehungRelativZuSenke > Schwelle ){
+
+				Senke += Schwelle;
+				SternenSenke += 2*SternenSchwelle;
+
+				if( Titel == 0 ) {  Schwelle = 70; // MENTAL -ziehen-> DIGITAL
+				} else{ Schwelle = 55;  }
+
+				Senke += Schwelle;
+
+				Titel = (Titel +1) %3;
+			} 
+
+
+
 		},
 
 		onRelease: function() {
-			gsap.to( '#Rad', {  rotation: Senke, ease: CustomEase.create("custom", "M0,0 C0,0 0.454,0.093 0.586,0.45 0.702,0.764 0.651,0.937 0.682,0.978 0.732,1.06 0.79,1.012 0.89,1 0.952,0.99 1,1 1,1"), duration: 1  } );
-			gsap.set( '#Griff', {  rotation: Senke  })
-			GradAkuteDrehung = Senke; 
+			gsap.to( ['#Rad', '#Griff'], {  
+				rotation: Senke, 
+				ease: CustomEase.create("custom", "M0,0 C0,0 0.454,0.093 0.586,0.45 0.702,0.764 0.651,0.937 0.682,0.978 0.732,1.06 0.79,1.012 0.89,1 0.952,0.99 1,1 1,1"), 
+				duration: 1,
+				onComplete: function() {  
+					if( Senke >= 360 || Senke <= -360 ){  Senke = Senke%360  };
+					gsap.set ( ['#Rad', '#Griff'], {  rotation: Senke, } );
+				}
+			} );
+			gsap.to( '#SterneA', {
+				rotation: SternenSenke, 
+				ease: 'power2', 
+				duration: 1,
+				onComplete: function() {  
+					if( SternenSenke >= 60 || SternenSenke <= 60 ){  SternenSenke = SternenSenke%60  };
+					gsap.set ( '#SterneA', {  rotation: SternenSenke, } );
+				}
+			})
 		}
 	}
 );
