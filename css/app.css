@@ -1,3 +1,23 @@
+ @font-face { font-family: Rund; src: url('../Fonts/SFCompactRounded.ttf') format('truetype'); } 
+
+ 	.Unterschrift {
+
+ 		font-family: Rund;
+ 		font-size: 20px;		
+
+ 		left: 50%;
+ 		width: 50%;
+ 		transform: translate(-50%,0);
+ 		position: absolute;
+
+ 	}
+ 	#Cred {
+
+ 		left: 50%;
+ 		width: 50%;
+ 		transform: translate(-50%,0);
+
+ 	}
 
 	#Vorhang {
 	}
@@ -45,7 +65,7 @@
 
 		position: absolute;
 		transform: translate3d(-50%, -50%,0 );
-		}
+	}
 
 		#Willkommen {
 			z-index: 0;

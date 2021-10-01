@@ -97,6 +97,29 @@ const Auswaehlen = Draggable.create(
 				let Gebremst = 0;
 				let SterneGebremst = 0;
 
+			if( DrehungRelativZuSenke < -Schwelle ){
+ 
+				Senke -= Schwelle;
+				SternenSenke -= 2*SternenSchwelle;
+
+				if( Titel == 2 ) {  Schwelle = 70;  } else{  Schwelle = 55;  }
+
+				Senke -= Schwelle;
+
+				Titel = (Titel +2) %3;
+			} 
+			if( DrehungRelativZuSenke > Schwelle ){
+
+				Senke += Schwelle;
+				SternenSenke += 2*SternenSchwelle;
+
+				if( Titel == 0 ) {  Schwelle = 70;  } else{  Schwelle = 55;  }
+
+				Senke += Schwelle;
+
+				Titel = (Titel +1) %3;
+			} 
+
 			if( DrehungRelativZuSenke < -1 ){
 
 				if( Titel == 0 ) SternenSchwelle = 15;
@@ -107,7 +130,6 @@ const Auswaehlen = Draggable.create(
 
 				SterneGebremst = SternenSenke - Math.log( -DrehungRelativZuSenke/Schwelle*SternenSchwelle );
 
-
 			} if ( DrehungRelativZuSenke > 1 ){
 
 				if( Titel == 0 ) SternenSchwelle = 9;
@@ -117,43 +139,16 @@ const Auswaehlen = Draggable.create(
 				Gebremst = Senke + Math.log( DrehungRelativZuSenke );
 
 				SterneGebremst = SternenSenke + Math.log( DrehungRelativZuSenke/Schwelle*SternenSchwelle );
-
 			}
 
-				if( DrehungRelativZuSenke > 30 || DrehungRelativZuSenke < -30 ) {
-					gsap.to( '#Rad', { rotation: Lose } );
-					gsap.to( '#SterneA', { rotation: SterneLose } );  }
-				else if( DrehungRelativZuSenke > 1 || DrehungRelativZuSenke < -1 ) { 
-					gsap.to( '#Rad', { rotation: Gebremst } );
-					gsap.to( '#SterneA', { rotation: SterneGebremst } );  }
-
-
-			if( DrehungRelativZuSenke < -Schwelle ){
- 
-				Senke -= Schwelle;
-				SternenSenke -= 2*SternenSchwelle;
-
-				if( Titel == 2 ) {  Schwelle = 70; // MATERIAL -ziehen-> DIGITAL
-				} else{ Schwelle = 55;  }
-
-				Senke -= Schwelle;
-
-				Titel = (Titel +2) %3;
-
-			} if( DrehungRelativZuSenke > Schwelle ){
-
-				Senke += Schwelle;
-				SternenSenke += 2*SternenSchwelle;
-
-				if( Titel == 0 ) {  Schwelle = 70; // MENTAL -ziehen-> DIGITAL
-				} else{ Schwelle = 55;  }
-
-				Senke += Schwelle;
-
-				Titel = (Titel +1) %3;
-			} 
-
-
+			if( DrehungRelativZuSenke > 30 || DrehungRelativZuSenke < -30 ) {
+				gsap.to( '#Rad', { rotation: Lose } );
+				gsap.to( '#SterneA', { rotation: SterneLose } );  console.log(SterneLose)
+}
+			else if( DrehungRelativZuSenke > 1 || DrehungRelativZuSenke < -1 ) { 
+				gsap.to( '#Rad', { rotation: Gebremst } );
+				gsap.to( '#SterneA', { rotation: SterneGebremst } );  console.log(SterneGebremst)
+}
 
 		},
 
@@ -169,7 +164,7 @@ const Auswaehlen = Draggable.create(
 			} );
 			gsap.to( '#SterneA', {
 				rotation: SternenSenke, 
-				ease: 'power2', 
+				ease: 'power', 
 				duration: 1,
 				onComplete: function() {  
 					if( SternenSenke >= 60 || SternenSenke <= 60 ){  SternenSenke = SternenSenke%60  };
