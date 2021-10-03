@@ -11,6 +11,8 @@ const Griff = document.getElementById('Griff');
 
 const Digital = document.getElementById('Digital');
 
+
+
 function GriffBereiten(){
 
 	let Breite = Rad.clientWidth;
@@ -19,8 +21,6 @@ function GriffBereiten(){
 	NichtGriff.style.height = (Breite - (Breite/100)*40) + 'px';
 	NichtGriff.style.width = (Breite - (Breite/100)*40) + 'px';	
 }
-
-
 
 
 window.addEventListener('DOMContentLoaded', function() {
@@ -38,13 +38,25 @@ window.addEventListener('resize', function() {
 );
 
 
+var darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+handleDarkmode(darkModeMediaQuery);
+function handleDarkmode(e){
+	var darkModeOn = e.matches; // true if dark mode is enabled
+	var favicon = document.querySelector('link[rel="shortcut icon"]'); 
+	if(darkModeOn){  favicon.href = '/favicon-dark.ico';  }else{  favicon.href = '/favicon.ico';  }
+}
+darkModeMediaQuery.addListener(handleDarkmode);
+
+
+
 const Begruessung = gsap.timeline(
 	{
-		paused: true, onStart: function() {	window.scrollTo(0,2000); }, 
+		paused: true, onStart: function() { 
+			window.scrollTo(0, (2000 + window.innerHeight/2)); }, 
 	}
 )
 
-Begruessung/*
+Begruessung
 	.set(
 		'#Willkommen', {
 			opacity: 1,
@@ -57,7 +69,7 @@ Begruessung/*
 		'#Willkommen', {
 			opacity: 0,
 			delay: 3.5
-		} )*/
+		} )
 	.to( 
 		'#Rad', {
 			opacity: 1,
@@ -143,12 +155,10 @@ const Auswaehlen = Draggable.create(
 
 			if( DrehungRelativZuSenke > 30 || DrehungRelativZuSenke < -30 ) {
 				gsap.to( '#Rad', { rotation: Lose } );
-				gsap.to( '#SterneA', { rotation: SterneLose } );  console.log(SterneLose)
-}
+				gsap.to( '#SterneA', { rotation: SterneLose } );  }
 			else if( DrehungRelativZuSenke > 1 || DrehungRelativZuSenke < -1 ) { 
 				gsap.to( '#Rad', { rotation: Gebremst } );
-				gsap.to( '#SterneA', { rotation: SterneGebremst } );  console.log(SterneGebremst)
-}
+				gsap.to( '#SterneA', { rotation: SterneGebremst } );  }
 
 		},
 
@@ -175,6 +185,22 @@ const Auswaehlen = Draggable.create(
 	}
 );
 
+
+
+
+
+
+
+const Credits = gsap.timeline(
+		{  paused: false, repeat: -1  }
+	)
+Credits
+	.to( '#Visuell', { opacity: 1, duration: 2 })
+	.to( '#Visuell', { opacity: 0, duration: 2 })
+	.to( '#Konzept', { opacity: 1, duration: 2 })
+	.to( '#Konzept', { opacity: 0, duration: 2 })
+	.to( '#Entwicklung', { opacity: 1, duration: 2 })
+	.to( '#Entwicklung', { opacity: 0, duration: 2 })
 
 
 	const g = gsap.fromTo( 

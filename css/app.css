@@ -1,22 +1,7 @@
  @font-face { font-family: Rund; src: url('../Fonts/SFCompactRounded.ttf') format('truetype'); } 
 
- 	.Unterschrift {
-
- 		font-family: Rund;
- 		font-size: 20px;		
-
- 		left: 50%;
- 		width: 50%;
- 		transform: translate(-50%,0);
- 		position: absolute;
-
- 	}
- 	#Cred {
-
- 		left: 50%;
- 		width: 50%;
- 		transform: translate(-50%,0);
-
+ 	body {
+		margin: 0;
  	}
 
 	#Vorhang {
@@ -24,7 +9,7 @@
 	
 
 	#Sicht {	
-		overflow: hidden	
+		overflow: hidden;
 	}
 
 
@@ -50,7 +35,7 @@
 
 	#Kern {
 
-		height: 100vh;
+		height: 200vh;
 
 		position: relative;
 
@@ -68,12 +53,12 @@
 	}
 
 		#Willkommen {
-			z-index: 0;
+			z-index: 2;
 
 		}
 
 		#Rad {
-			z-index: 1;
+			z-index: 0;
 			max-height: 1000px;
 		}
 
@@ -88,33 +73,66 @@
 			display: inline-block;
 		}
 		#NichtGriff { 
-			z-index: 1;
+			z-index: 2;
 			background-color: transparent;
 			border-radius: 50%;
 			display: inline-block;
 			pointer-events: 'none';
 		}
+		.Sterne {
+			z-index: 0;
+		}
 
+
+ 	.Unterschrift {
+ 		z-index: 0;
+
+ 		font-family: Rund;
+ 		font-size: 20px;		
+
+ 		height: 100px;
+ 		width: 100%;
+
+
+		position: absolute;
+
+	 }
+	 	#Cred {
+	 		left: 50%;
+	 		width: 50%;
+	 		transform: translate(-15%);
+ 			background-color: transparent;
+	 	}
+		.CredSymbole {
+			display: inline-block;
+			transform: translate(-30px,27px);
+			opacity: 0;
+ 			background-color: transparent;
+	 	}
+	 	#Konzept{ transform: translate(-55px,27px);  }
+	 	#Entwicklung{ transform: translate(-80px,27px);  }
 
 
 
 
 @media screen and (orientation:landscape) {
 	#Sicht {	
-		overflow: hidden	
 	}
 
+/* **************************************
+	width & height entspricht 200vh
+*************************************** */
 
 		#Willkommen {
-			height: 140%;
+			height: 60%;
 		}
 
 		#Rad {
-			height: 80%;
+			height: 40%;
 		}
 
 		.Sterne {
-			height: 200%;
+			height: 100%;
 		}
 }
 
@@ -122,11 +140,14 @@
 
 @media screen and (orientation:portrait) {
 	#Sicht {	
-		overflow: hidden	
 	}
 
+/* **************************************
+	width & height entspricht 200vh
+*************************************** */
+
 		#Willkommen {
-			height: 100%;
+			height: 60%;
 		}
 
 		#Rad {
@@ -134,7 +155,7 @@
 		}
 
 		.Sterne {
-			width: 200%;
+			height: 70%;
 		}
 
 }
