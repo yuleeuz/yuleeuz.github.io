@@ -97,25 +97,27 @@
  		height: 100px;
  		width: 100%;
 
-
 		position: absolute;
+	    vertical-align: middle;
+	    text-align: center;
+	    display: table-cell;
 
 	 }
 	 	#Cred {
+	 		padding: 10px;
 	 		left: 50%;
 	 		width: 50%;
-	 		transform: translate(-15%);
  			background-color: transparent;
+ 			display: table;
+ 			transform: translate(-50%);
 	 	}
 		.CredSymbole {
-			display: inline-block;
-			transform: translate(-30px,27px);
-			opacity: 0;
- 			background-color: transparent;
+			vertical-align: middle;
+ 			display: table-cell;
+ 			opacity: 0;
+ 			margin-left: auto;
+ 			margin-right: auto;
 	 	}
-	 	#Konzept{ transform: translate(-55px,27px);  }
-	 	#Entwicklung{ transform: translate(-80px,27px);  }
-
 
 
 
@@ -132,7 +134,7 @@
 		}
 
 		#Anleitung {
-			height: 40%;
+			height: 60%;
 		}
 
 		#Rad {
@@ -159,7 +161,7 @@
 		}
 
 		#Anleitung {
-			height: 40%;
+			width: 120%;
 		}
 
 		#Rad {
