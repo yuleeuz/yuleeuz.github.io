@@ -49,6 +49,10 @@ darkModeMediaQuery.addListener(handleDarkmode);
 
 
 
+
+
+
+
 const Begruessung = gsap.timeline(
 	{
 		paused: true, onStart: function() { 
@@ -56,24 +60,51 @@ const Begruessung = gsap.timeline(
 	}
 )
 
+
+
+
+
 Begruessung
+
+
 	.set(
 		'#Willkommen', {
 			opacity: 1,
 			onComplete: function() {
 				Willkommen.currentTime = 0;
+				Anleitung.currentTime = 0;
+				Anleitung.pause();
 				Willkommen.play();
 			}
 		} )
 	.to(
 		'#Willkommen', {
 			opacity: 0,
-			delay: 3.5
+			delay: 3.5,
+			onComplete: function() {  Willkommen.style.display = 'none';  }
 		} )
 	.to( 
 		'#Rad', {
 			opacity: 1,
 			duration: 3
+		} )
+	.set(
+		'#Anleitung', {
+			opacity: 1,
+			onComplete: function() {
+				Anleitung.currentTime = 0;
+				Anleitung.play();
+			}
+		} )
+
+
+
+
+	.to(
+		'#Anleitung', {
+			opacity: 0,
+			delay: 35,
+			onComplete: function() {  Anleitung.style.display = 'none';  }
 		} )
 	.to(
 		'.Sterne', {
@@ -81,6 +112,11 @@ Begruessung
 			duration: 5,
 			delay: -3,
 		} )
+
+
+
+
+
 
 
 

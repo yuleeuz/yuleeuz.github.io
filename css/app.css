@@ -56,9 +56,13 @@
 			z-index: 2;
 
 		}
+		#Anleitung {
+			z-index: 0;
+
+		}
 
 		#Rad {
-			z-index: 0;
+			z-index: 1;
 			max-height: 1000px;
 		}
 
@@ -67,20 +71,20 @@
 		}
 
 		#Griff {
-			z-index: 1;
+			z-index: 2;
 			background-color: transparent;
 			border-radius: 50%;
 			display: inline-block;
 		}
 		#NichtGriff { 
-			z-index: 2;
+			z-index: 3;
 			background-color: transparent;
 			border-radius: 50%;
 			display: inline-block;
 			pointer-events: 'none';
 		}
 		.Sterne {
-			z-index: 0;
+			z-index: 1;
 		}
 
 
@@ -127,6 +131,10 @@
 			height: 60%;
 		}
 
+		#Anleitung {
+			height: 40%;
+		}
+
 		#Rad {
 			height: 40%;
 		}
@@ -148,6 +156,10 @@
 
 		#Willkommen {
 			height: 60%;
+		}
+
+		#Anleitung {
+			height: 40%;
 		}
 
 		#Rad {
