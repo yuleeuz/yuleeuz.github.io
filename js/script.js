@@ -61,12 +61,12 @@ const Begruessung = gsap.timeline(
 )
 
 
-
+let RadSimulationID = 0;
 
 
 Begruessung
 
-
+/*
 	.set(
 		'#Willkommen', {
 			opacity: 1,
@@ -82,29 +82,30 @@ Begruessung
 			opacity: 0,
 			delay: 3.5,
 			onComplete: function() {  Willkommen.style.display = 'none';  }
-		} )
+		} )*/
 	.to( 
 		'#Rad', {
 			opacity: 1,
-			duration: 3
+			duration: 0.5
 		} )
 	.set(
 		'#Anleitung', {
 			opacity: 1,
+			
 			onComplete: function() {
+				Willkommen.style.display = 'none';
+			},
+			onBegin: function() { 
+				RadSimulationID = setInterval( RadSimulieren, 100 );
 				Anleitung.currentTime = 0;
 				Anleitung.play();
-			}
+				},
+
 		} )
-
-
-
-
 	.to(
 		'#Anleitung', {
 			opacity: 0,
-			delay: 35,
-			onComplete: function() {  Anleitung.style.display = 'none';  }
+			delay: 35,			onComplete: function() {  Anleitung.style.display = 'none';  }
 		} )
 	.to(
 		'.Sterne', {
@@ -114,9 +115,46 @@ Begruessung
 		} )
 
 
+	let Grad = 0;
 
+function RadSimulieren() {
+	if( Anleitung.currentTime >3.35 && Anleitung.currentTime <3.75 ){
+			Grad = -(Anleitung.currentTime -3.35)/0.4 *5; 
+			//console.log(1)
+		}
+	if( Anleitung.currentTime >3.75 && Anleitung.currentTime <3.9 ){
+			Grad = -(Anleitung.currentTime -3.75)/0.15 *3  -5; 
+			//console.log(2)
+		}
+	if( Anleitung.currentTime >3.9 && Anleitung.currentTime <4.0 ){
+			Grad = (Anleitung.currentTime -3.9)/0.2 *20  -8; 
+			//console.log(3)
+		}
+	if( Anleitung.currentTime >4.0 && Anleitung.currentTime <5.8 ) {//bis 100
+			Grad = (Anleitung.currentTime -4.1)/1.8 *98  +12; 
+			//console.log(4)
+		}
+	if( Anleitung.currentTime >5.8 && Anleitung.currentTime <6.8 )	{//bis 195
+			Grad = (Anleitung.currentTime -5.8)/1 *85  +110; 
+			//console.log(5)
+		}
+	if( Anleitung.currentTime >6.8 && Anleitung.currentTime <8.0 )  {//bis 260
+			Grad = (Anleitung.currentTime -6.8)/1.2 *60  +195;	
+			//console.log(6)
+		}
+	if( Anleitung.currentTime >8.0 && Anleitung.currentTime <9.6 ){
+			Grad = (Anleitung.currentTime -8.0)/1.6 *70  +255; 
+			//console.log(7)
+		}
+	if( Anleitung.currentTime >9.6 && Anleitung.currentTime <12 ){
+			Grad = (Anleitung.currentTime -9.6)/2.4 *80  +325; 
+			//console.log(8)
+		}
+	RadDrehen( Grad );
+	console.log(Grad);
+	if( Anleitung.currentTime > 12 ){ clearInterval(RadSimulationID); RadLoslassen(); }
 
-
+}
 
 
 
@@ -126,19 +164,9 @@ let GradAkuteSternDrehung = 0;
 let Senke = 0; let Schwelle = 55;
 let SternenSenke = 0; let SternenSchwelle = 0;
 
-gsap.set( '#Griff', {
-	xPercent: -50,
-	yPercent: -50,
-	left: '50%',
-	top: '50%'
-} )
+function RadDrehen(Rotation) {
 
-const Auswaehlen = Draggable.create(
-
-	'#Griff', 
-	{	type: 'rotation',
-		onDrag: function() {
-			DrehungRelativZuSenke = this.rotation - Senke;
+			DrehungRelativZuSenke = Rotation - Senke;
 
 				let Lose = Senke + DrehungRelativZuSenke;
 				let SterneLose = SternenSenke + DrehungRelativZuSenke/Schwelle*SternenSchwelle;
@@ -195,10 +223,10 @@ const Auswaehlen = Draggable.create(
 			else if( DrehungRelativZuSenke > 1 || DrehungRelativZuSenke < -1 ) { 
 				gsap.to( '#Rad', { rotation: Gebremst } );
 				gsap.to( '#SterneA', { rotation: SterneGebremst } );  }
+}
 
-		},
+function RadLoslassen() {
 
-		onRelease: function() {
 			gsap.to( ['#Rad', '#Griff'], {  
 				rotation: Senke, 
 				ease: CustomEase.create("custom", "M0,0 C0,0 0.454,0.093 0.586,0.45 0.702,0.764 0.651,0.937 0.682,0.978 0.732,1.06 0.79,1.012 0.89,1 0.952,0.99 1,1 1,1"), 
@@ -217,7 +245,23 @@ const Auswaehlen = Draggable.create(
 					gsap.set ( '#SterneA', {  rotation: SternenSenke, } );
 				}
 			})
-		}
+}
+
+
+gsap.set( '#Griff', {
+	xPercent: -50,
+	yPercent: -50,
+	left: '50%',
+	top: '50%'
+} )
+
+const Auswaehlen = Draggable.create(
+
+	'#Griff', 
+	{	type: 'rotation',
+		onDrag: function() { RadDrehen(this.rotation); },
+
+		onRelease: function() { RadLoslassen(); }
 	}
 );
 
