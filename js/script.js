@@ -66,7 +66,7 @@ let RadSimulationID = 0;
 
 Begruessung
 
-/*
+
 	.set(
 		'#Willkommen', {
 			opacity: 1,
@@ -82,7 +82,7 @@ Begruessung
 			opacity: 0,
 			delay: 3.5,
 			onComplete: function() {  Willkommen.style.display = 'none';  }
-		} )*/
+		} )
 	.to( 
 		'#Rad', {
 			opacity: 1,
