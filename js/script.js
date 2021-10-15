@@ -39,7 +39,7 @@ window.addEventListener( 'resize', function() {
 	GriffBereiten();  } );
 
 window.addEventListener( 'wheel', function() {  Input(); });
-window.addEventListener( 'click', function() {  Input(); });
+window.addEventListener( 'touchstart', function() {  Input(); });
 
 
 
