@@ -5,37 +5,13 @@ gsap.registerPlugin(CustomEase);
 const Emblem = document.getElementById('Emblem');
 
 const Willkommen = document.getElementById('Willkommen');
+const Anleitung = document.getElementById('Anleitung');
 
 const Rad = document.getElementById('Rad');
 const Griff = document.getElementById('Griff');
 
 const Digital = document.getElementById('Digital');
 
-
-
-function GriffBereiten(){
-
-	let Breite = Rad.clientWidth;
-	Griff.style.height = Breite + 'px';
-	Griff.style.width = Breite + 'px';
-	NichtGriff.style.height = (Breite - (Breite/100)*40) + 'px';
-	NichtGriff.style.width = (Breite - (Breite/100)*40) + 'px';	
-}
-
-
-window.addEventListener('DOMContentLoaded', function() {
-
-    GriffBereiten();
-    console.log('Begruessung beginnt');
-    Begruessung.play();
-
-	}
-);
-
-window.addEventListener('resize', function() {
-	GriffBereiten();
-	}
-);
 
 
 var darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
@@ -50,111 +26,180 @@ darkModeMediaQuery.addListener(handleDarkmode);
 
 
 
+window.addEventListener('DOMContentLoaded', function() {
+
+    GriffBereiten();
+    console.log('Begruessung beginnt');
+    Begruessung.play();
+	} );
+
+window.addEventListener( 'resize', function() {  GriffBereiten();  } );
+
+window.addEventListener( 'wheel', function() {  
+	if( AnleitungLaeuft ){  
+		console.log( 'Anleitung wird abgebrochen' );
+		Begruessung.seek(11);
+		gsap.to( '.Sterne', {
+				opacity: 0.1,
+				duration: 2,
+			} );
+		clearInterval( SimulationIntervallID );
+		RadLoslassen();
+		gsap.to('#Anleitung', {
+			opacity: 0,
+			onComplete: function() {  Anleitung.style.display = 'none';  }
+		} );
+		AnleitungLaeuft = 0;
+	}  
+})
 
 
 
-const Begruessung = gsap.timeline(
-	{
-		paused: true, onStart: function() { 
-			window.scrollTo(0, (2000 + window.innerHeight/2)); }, 
+
+function GriffBereiten(){
+
+	let Breite = Rad.clientWidth;
+	Griff.style.height = Breite + 'px';
+	Griff.style.width = Breite + 'px';
+	NichtGriff.style.height = (Breite - (Breite/100)*40) + 'px';
+	NichtGriff.style.width = (Breite - (Breite/100)*40) + 'px';	
+}
+gsap.set( '#Griff', {
+	xPercent: -50,
+	yPercent: -50,
+	left: '50%',
+	top: '50%'
+} )
+
+const Auswaehlen = Draggable.create(
+
+	'#Griff', 
+	{	type: 'rotation',
+		onDrag: function() {  RadDrehen(this.rotation);  },
+		onRelease: function() {  RadLoslassen();  }
 	}
-)
+);
 
 
-let RadSimulationID = 0;
-
+let AnleitungLaeuft = 0;
+const Begruessung = gsap.timeline( {
+		paused: true, 
+		onStart: function() {  window.scrollTo(0, (2000 + window.innerHeight/2));  }
+} )
 
 Begruessung
 
-
-	.set(
-		'#Willkommen', {
+		.set( '#Willkommen', {
+				opacity: 1,
+				onComplete: function() {
+					Willkommen.currentTime = 0;
+					Willkommen.play();  }
+			} )
+		.set( '#Willkommen', {
+				onBegin: function() {
+					Anleitung.currentTime = 0;
+					Anleitung.pause();
+					console.log( 'Anleitung laeuft' );
+					AnleitungLaeuft = 1;  },
+				opacity: 0,
+				delay: 3.5,
+				onComplete: function() {  
+					console.log( 'Begruessung ist abgeschlossen' );
+					Willkommen.style.display = 'none';  }
+			} )
+	.to( '#Rad', {
+			opacity: 1, duration: 2
+		} )
+	.to( '#Anleitung', {
 			opacity: 1,
-			onComplete: function() {
-				Willkommen.currentTime = 0;
-				Anleitung.currentTime = 0;
-				Anleitung.pause();
-				Willkommen.play();
-			}
+			delay: -1,
+			onComplete: function() {  Anleitung.play(); Anleitung.playbackRate = 0.9;  }
 		} )
-	.to(
-		'#Willkommen', {
-			opacity: 0,
-			delay: 3.5,
-			onComplete: function() {  Willkommen.style.display = 'none';  }
-		} )
-	.to( 
-		'#Rad', {
-			opacity: 1,
-			duration: 0.5
-		} )
-	.set(
-		'#Anleitung', {
-			opacity: 1,
-			
-			onComplete: function() {
-				Willkommen.style.display = 'none';
-			},
-			onBegin: function() { 
-				RadSimulationID = setInterval( RadSimulieren, 100 );
-				Anleitung.currentTime = 0;
-				Anleitung.play();
-				},
-
-		} )
-	.to(
-		'#Anleitung', {
-			opacity: 0,
-			delay: 35,			onComplete: function() {  Anleitung.style.display = 'none';  }
-		} )
+		.set( '#Anleitung', {
+				delay: 1.6,
+				onComplete: function() { SimulationIntervallID = setInterval( RadSimulieren, 50 );  } 
+			} )
+		.set( '#Anleitung', { 
+				delay: 5,
+				onBegin: function() {  SimulationIntervallID = setInterval( ScrollSimulieren, 10 );  }  
+			} )
+		.set( '#Anleitung', {
+				delay: 10.5,
+				onComplete: function() {  
+					console.log( 'Anleitung ist abgeschlossen');
+					AnleitungLaeuft = 0; Anleitung.style.display = 'none'; }
+			} )
 	.to(
 		'.Sterne', {
 			opacity: 0.1,
 			duration: 5,
-			delay: -3,
+			delay: -6
 		} )
 
 
-	let Grad = 0;
+let Grad = 0;
+let Verschiebung = 0;
+
+let SimulationIntervallID = 0;
 
 function RadSimulieren() {
-	if( Anleitung.currentTime >3.35 && Anleitung.currentTime <3.75 ){
-			Grad = -(Anleitung.currentTime -3.35)/0.4 *5; 
+	if( Anleitung.currentTime >1.6 && Anleitung.currentTime <1.85 ){
+			Grad = (Anleitung.currentTime -1.6)/0.20 *5;
 			//console.log(1)
 		}
-	if( Anleitung.currentTime >3.75 && Anleitung.currentTime <3.9 ){
-			Grad = -(Anleitung.currentTime -3.75)/0.15 *3  -5; 
+	if( Anleitung.currentTime >1.85 && Anleitung.currentTime <2.75 ){
+			Grad = (Anleitung.currentTime -1.85)/0.9 *75  +25; 
 			//console.log(2)
 		}
-	if( Anleitung.currentTime >3.9 && Anleitung.currentTime <4.0 ){
-			Grad = (Anleitung.currentTime -3.9)/0.2 *20  -8; 
+	if( Anleitung.currentTime >2.75 && Anleitung.currentTime <3.4 ){
+			Grad = (Anleitung.currentTime -2.75)/0.65 *120  +100; 
 			//console.log(3)
 		}
-	if( Anleitung.currentTime >4.0 && Anleitung.currentTime <5.8 ) {//bis 100
-			Grad = (Anleitung.currentTime -4.1)/1.8 *98  +12; 
+	if( Anleitung.currentTime >3.4 && Anleitung.currentTime <4.2 ) {
+			Grad = (Anleitung.currentTime -3.4)/0.8 *95  +220; 
 			//console.log(4)
 		}
-	if( Anleitung.currentTime >5.8 && Anleitung.currentTime <6.8 )	{//bis 195
-			Grad = (Anleitung.currentTime -5.8)/1 *85  +110; 
+	if( Anleitung.currentTime >4.2 && Anleitung.currentTime <4.6 )	{
+			Grad = (Anleitung.currentTime -4.2)/0.4 *70  +315; 
 			//console.log(5)
 		}
-	if( Anleitung.currentTime >6.8 && Anleitung.currentTime <8.0 )  {//bis 260
-			Grad = (Anleitung.currentTime -6.8)/1.2 *60  +195;	
-			//console.log(6)
+	if( Anleitung.currentTime >5 && Anleitung.currentTime <5.2 )	{
+			Grad = -(Anleitung.currentTime -5)/0.2 *5  +385; 
+			//console.log(5)
 		}
-	if( Anleitung.currentTime >8.0 && Anleitung.currentTime <9.6 ){
-			Grad = (Anleitung.currentTime -8.0)/1.6 *70  +255; 
-			//console.log(7)
-		}
-	if( Anleitung.currentTime >9.6 && Anleitung.currentTime <12 ){
-			Grad = (Anleitung.currentTime -9.6)/2.4 *80  +325; 
-			//console.log(8)
-		}
-	RadDrehen( Grad );
-	console.log(Grad);
-	if( Anleitung.currentTime > 12 ){ clearInterval(RadSimulationID); RadLoslassen(); }
-
+	RadDrehen( Grad );	
+	if( Anleitung.currentTime > 5.3 ){ 
+		clearInterval( SimulationIntervallID ); RadLoslassen(); console.log('x') }
 }
+
+function ScrollSimulieren() {
+
+	if( Anleitung.currentTime >6.3 && Anleitung.currentTime <7 ){
+		Verschiebung = -( (Anleitung.clientHeight/2.7)/70 );
+		window.scrollBy( 0, Verschiebung );
+	}
+	if( Anleitung.currentTime >7 && Anleitung.currentTime <7.3 ){
+		Verschiebung = -( (Anleitung.clientHeight/7)/30 );
+		window.scrollBy( 0, Verschiebung );
+	}
+	if( Anleitung.currentTime >7.6 && Anleitung.currentTime <8.4 ){
+		Verschiebung = ( (Anleitung.clientHeight/3.5)/80 );
+		window.scrollBy( 0, Verschiebung );
+	}
+	if( Anleitung.currentTime >8.4 && Anleitung.currentTime <8.9 ){
+		Verschiebung = ( (Anleitung.clientHeight/6)/50 );
+		window.scrollBy( 0, Verschiebung );
+	}
+
+	if( Anleitung.currentTime > 8.9 ){ 
+		clearInterval( SimulationIntervallID ); }
+}
+
+
+
+
+
+
 
 
 
@@ -246,25 +291,6 @@ function RadLoslassen() {
 				}
 			})
 }
-
-
-gsap.set( '#Griff', {
-	xPercent: -50,
-	yPercent: -50,
-	left: '50%',
-	top: '50%'
-} )
-
-const Auswaehlen = Draggable.create(
-
-	'#Griff', 
-	{	type: 'rotation',
-		onDrag: function() { RadDrehen(this.rotation); },
-
-		onRelease: function() { RadLoslassen(); }
-	}
-);
-
 
 
 
