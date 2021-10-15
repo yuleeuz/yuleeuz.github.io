@@ -334,6 +334,52 @@ function RadLoslassen() {
 
 
 
+
+const video = document.querySelector("#GesteMaterial");
+let src = video.currentSrc || video.src;
+console.log(video, src);
+
+/* Make sure the video is 'activated' on iOS */
+function once(el, event, fn, opts) {
+  var onceFn = function (e) {
+    el.removeEventListener(event, onceFn);
+    fn.apply(this, arguments);
+  };
+  el.addEventListener(event, onceFn, opts);
+  return onceFn;
+}
+
+once(document.documentElement, "touchstart", function (e) {
+  video.play();
+  video.pause();
+});
+
+
+let tl = gsap.timeline({
+  defaults: { duration: 1 },
+  scrollTrigger: {
+    trigger: "#Kern",
+    start: "top center",
+    end: "center center",
+    scrub: true
+  }
+});
+
+once(video, "loadedmetadata", () => {
+  tl.fromTo(
+    video,
+    {
+      currentTime: video.duration
+    },
+    {
+      currentTime: 0
+    }
+  );
+});
+
+
+
+
 const Credits = gsap.timeline(
 		{  paused: false, repeat: -1  }
 	)
@@ -344,7 +390,7 @@ Credits
 	.to( '#Konzept', { opacity: 0, duration: 2 })
 	.to( '#Entwicklung', { opacity: 1, duration: 2 })
 	.to( '#Entwicklung', { opacity: 0, duration: 2 })
-
+/*
 
 	const g = gsap.fromTo( 
 
@@ -359,4 +405,4 @@ Credits
 					scrub: true,
 					//markers: true,
 				}
-	} );
+	} );*/

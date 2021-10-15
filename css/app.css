@@ -15,22 +15,28 @@
 
 	#Inhalt {
 
-		opacity: 0;
 		height: 2000px;
 
 	}
 
-
-	#Ticket {
-		
+	#Digital {
 		opacity: 0;
-		top: 100%;
-		left: 50%;
-		width: 100%;
-
-		position: relative;
-		transform: translate(-50%, -50%);
 	}
+	#Material {
+		opacity: 0;
+	}
+	#Mental {
+		opacity: 0;
+	}
+
+		.video-background {
+		  position: fixed;
+		  top: 50%;
+		  left: 50%;
+		  min-width: 100%;
+		  min-height: 100%;
+		  transform: translate(-50%, -50%);
+		}
 
 
 	#Kern {
