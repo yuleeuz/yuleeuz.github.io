@@ -35,23 +35,8 @@ window.addEventListener('DOMContentLoaded', function() {
 
 window.addEventListener( 'resize', function() {  GriffBereiten();  } );
 
-window.addEventListener( 'wheel', function() {  
-	if( AnleitungLaeuft ){  
-		console.log( 'Anleitung wird abgebrochen' );
-		Begruessung.seek(11);
-		gsap.to( '.Sterne', {
-				opacity: 0.1,
-				duration: 2,
-			} );
-		clearInterval( SimulationIntervallID );
-		RadLoslassen();
-		gsap.to('#Anleitung', {
-			opacity: 0,
-			onComplete: function() {  Anleitung.style.display = 'none';  }
-		} );
-		AnleitungLaeuft = 0;
-	}  
-})
+window.addEventListener( 'wheel', function() {  Input(); });
+window.addEventListener( 'click', function() {  Input(); });
 
 
 
@@ -81,10 +66,33 @@ const Auswaehlen = Draggable.create(
 );
 
 
+
+function Input(){
+
+	if( AnleitungLaeuft ){  
+		console.log( 'Anleitung wird abgebrochen' );
+		Begruessung.seek(11);
+		gsap.to( '.Sterne', {
+				opacity: 0.1,
+				duration: 2,
+			} );
+		clearInterval( SimulationIntervallID );
+		RadLoslassen();
+		gsap.to('#Anleitung', {
+			opacity: 0,
+			onComplete: function() {  Anleitung.style.display = 'none';  }
+		} );
+		AnleitungLaeuft = 0;
+	}  
+}
+
+
+
+
 let AnleitungLaeuft = 0;
 const Begruessung = gsap.timeline( {
 		paused: true, 
-		onStart: function() {  window.scrollTo(0, (2000 + window.innerHeight/2));  }
+		onStart: function() {  window.scrollTo(0, (2000 + window.outerHeight/2));  }
 } )
 
 Begruessung
@@ -169,7 +177,7 @@ function RadSimulieren() {
 		}
 	RadDrehen( Grad );	
 	if( Anleitung.currentTime > 5.3 ){ 
-		clearInterval( SimulationIntervallID ); RadLoslassen(); console.log('x') }
+		clearInterval( SimulationIntervallID ); RadLoslassen();  }
 }
 
 function ScrollSimulieren() {
@@ -182,7 +190,7 @@ function ScrollSimulieren() {
 		Verschiebung = -( (Anleitung.clientHeight/7)/30 );
 		window.scrollBy( 0, Verschiebung );
 	}
-	if( Anleitung.currentTime >7.6 && Anleitung.currentTime <8.4 ){
+	if( Anleitung.currentTime >7.7 && Anleitung.currentTime <8.4 ){
 		Verschiebung = ( (Anleitung.clientHeight/3.5)/80 );
 		window.scrollBy( 0, Verschiebung );
 	}
@@ -275,7 +283,7 @@ function RadLoslassen() {
 			gsap.to( ['#Rad', '#Griff'], {  
 				rotation: Senke, 
 				ease: CustomEase.create("custom", "M0,0 C0,0 0.454,0.093 0.586,0.45 0.702,0.764 0.651,0.937 0.682,0.978 0.732,1.06 0.79,1.012 0.89,1 0.952,0.99 1,1 1,1"), 
-				duration: 1,
+				duration: 1.4,
 				onComplete: function() {  
 					if( Senke >= 360 || Senke <= -360 ){  Senke = Senke%360  };
 					gsap.set ( ['#Rad', '#Griff'], {  rotation: Senke, } );
@@ -284,7 +292,7 @@ function RadLoslassen() {
 			gsap.to( '#SterneA', {
 				rotation: SternenSenke, 
 				ease: 'power', 
-				duration: 1,
+				duration: 1.4,
 				onComplete: function() {  
 					if( SternenSenke >= 60 || SternenSenke <= 60 ){  SternenSenke = SternenSenke%60  };
 					gsap.set ( '#SterneA', {  rotation: SternenSenke, } );
