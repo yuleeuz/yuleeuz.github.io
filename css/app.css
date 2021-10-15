@@ -141,6 +141,12 @@
 		#Rad {
 			height: 40%;
 		}
+		#RadSchatten {
+			height: 40%;
+		}
+		#RadSchattenWeit {
+			height: 40%;
+		}
 
 		.Sterne {
 			height: 100%;
@@ -166,6 +172,12 @@
 		}
 
 		#Rad {
+			width: 80%;
+		}
+		#RadSchatten {
+			width: 80%;
+		}
+		#RadSchattenWeit {
 			width: 80%;
 		}
 

@@ -33,7 +33,10 @@ window.addEventListener('DOMContentLoaded', function() {
     Begruessung.play();
 	} );
 
-window.addEventListener( 'resize', function() {  GriffBereiten();  } );
+window.addEventListener( 'resize', function() {  
+	if( window.innerHeight < window.innerWidth ) {  Rad.style.height = '40%'; Rad.style.width= '';  }
+	if( window.innerHeight > window.innerWidth ) {  Rad.style.height = ''; Rad.style.width= '80%';  }
+	GriffBereiten();  } );
 
 window.addEventListener( 'wheel', function() {  Input(); });
 window.addEventListener( 'click', function() {  Input(); });
@@ -60,8 +63,18 @@ const Auswaehlen = Draggable.create(
 
 	'#Griff', 
 	{	type: 'rotation',
-		onDrag: function() {  RadDrehen(this.rotation);  },
-		onRelease: function() {  RadLoslassen();  }
+		onDrag: function() {  
+			gsap.to( '#RadSchatten', { opacity: 0 });
+			gsap.to( '#RadSchattenWeit', { opacity: 1 });
+			if( window.innerHeight < window.innerWidth ) {  gsap.to( Rad, {  height: '41%'  } ); }
+			if( window.innerHeight > window.innerWidth ) {  gsap.to( Rad, {  width: '82%'  } );  }
+			RadDrehen(this.rotation);  },
+		onRelease: function() {  
+			gsap.to( '#RadSchatten', { opacity: 1 });
+			gsap.to( '#RadSchattenWeit', { opacity: 0 });
+			if( window.innerHeight < window.innerWidth ) {  gsap.to( Rad, {  height: '40%', duration: 2  } ); }
+			if( window.innerHeight > window.innerWidth ) {  gsap.to( Rad, {  width: '80%', duration: 2  } );  }
+			RadLoslassen();  }
 	}
 );
 
@@ -74,6 +87,10 @@ function Input(){
 		Begruessung.seek(11);
 		gsap.to( '.Sterne', {
 				opacity: 0.1,
+				duration: 2,
+			} );
+		gsap.to( '#RadSchatten', {
+				opacity: 1,
 				duration: 2,
 			} );
 		clearInterval( SimulationIntervallID );
@@ -92,7 +109,11 @@ function Input(){
 let AnleitungLaeuft = 0;
 const Begruessung = gsap.timeline( {
 		paused: true, 
-		onStart: function() {  window.scrollTo(0, (2000 + window.outerHeight/2));  }
+		onStart: function() {  
+			if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+			window.scrollTo(0, (2000 + window.availHeight/2));  } else {  window.scrollTo(0, (2000 + window.innerHeight/2));  }
+		}
+
 } )
 
 Begruessung
@@ -143,6 +164,10 @@ Begruessung
 			duration: 5,
 			delay: -6
 		} )
+	.to( '#RadSchatten', {
+			opacity: 1,
+			duration: 2,
+		}, '<' );
 
 
 let Grad = 0;
@@ -214,6 +239,7 @@ function ScrollSimulieren() {
 let Titel = 0;  //  DIGITAL, MATERIAL, MENTAL
 let DrehungRelativZuSenke = 0;
 let GradAkuteSternDrehung = 0;
+let RadRotation = 0;
 let Senke = 0; let Schwelle = 55;
 let SternenSenke = 0; let SternenSchwelle = 0;
 
@@ -271,22 +297,25 @@ function RadDrehen(Rotation) {
 			}
 
 			if( DrehungRelativZuSenke > 30 || DrehungRelativZuSenke < -30 ) {
-				gsap.to( '#Rad', { rotation: Lose } );
+				RadRotation = Lose;
+				gsap.to( ['#Rad','#RadSchatten', '#RadSchattenWeit'], { rotation: Lose } );
 				gsap.to( '#SterneA', { rotation: SterneLose } );  }
 			else if( DrehungRelativZuSenke > 1 || DrehungRelativZuSenke < -1 ) { 
-				gsap.to( '#Rad', { rotation: Gebremst } );
+				RadRotation = Gebremst;
+				gsap.to( ['#Rad','#RadSchatten', '#RadSchattenWeit'], { rotation: Gebremst } );
 				gsap.to( '#SterneA', { rotation: SterneGebremst } );  }
 }
 
 function RadLoslassen() {
 
-			gsap.to( ['#Rad', '#Griff'], {  
+			gsap.to( ['#Rad','#RadSchatten', '#RadSchattenWeit', '#Griff'], {  
 				rotation: Senke, 
 				ease: CustomEase.create("custom", "M0,0 C0,0 0.454,0.093 0.586,0.45 0.702,0.764 0.651,0.937 0.682,0.978 0.732,1.06 0.79,1.012 0.89,1 0.952,0.99 1,1 1,1"), 
 				duration: 1.4,
 				onComplete: function() {  
 					if( Senke >= 360 || Senke <= -360 ){  Senke = Senke%360  };
-					gsap.set ( ['#Rad', '#Griff'], {  rotation: Senke, } );
+					gsap.set ( ['#Rad','#RadSchatten', '#RadSchattenWeit', '#Griff'], {  rotation: Senke, } );
+					RadRotation = Senke;
 				}
 			} );
 			gsap.to( '#SterneA', {
