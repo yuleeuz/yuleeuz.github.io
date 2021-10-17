@@ -63,11 +63,14 @@ const Auswaehlen = Draggable.create(
 
 	'#Griff', 
 	{	type: 'rotation',
-		onDrag: function() {  
+		onPress: function() {
+			this.startDrag()},
+		onDragStart: function() {
 			gsap.to( '#RadSchatten', { opacity: 0 });
 			gsap.to( '#RadSchattenWeit', { opacity: 1 });
 			if( window.innerHeight < window.innerWidth ) {  gsap.to( Rad, {  height: '41%'  } ); }
-			if( window.innerHeight > window.innerWidth ) {  gsap.to( Rad, {  width: '82%'  } );  }
+			if( window.innerHeight > window.innerWidth ) {  gsap.to( Rad, {  width: '82%'  } );  }  },
+		onDrag: function() {  
 			RadDrehen(this.rotation);  },
 		onRelease: function() {  
 			gsap.to( '#RadSchatten', { opacity: 1 });
@@ -111,7 +114,7 @@ const Begruessung = gsap.timeline( {
 		paused: true, 
 		onStart: function() {  
 			if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-			window.scrollTo(0, (2000 + window.availHeight/2));  } else {  window.scrollTo(0, (2000 + window.innerHeight/2));  }
+			window.scrollTo(0, (2000 + screen.availHeight/2));  } else {  window.scrollTo(0, (2000 + window.innerHeight/2));  }
 		}
 
 } )
@@ -164,7 +167,7 @@ Begruessung
 			duration: 5,
 			delay: -6
 		} )
-	.to( '#RadSchatten', {
+	.to( ['#Rad','#RadSchatten'], {
 			opacity: 1,
 			duration: 2,
 		}, '<' );
