@@ -2,7 +2,7 @@ gsap.registerPlugin(ScrollTrigger);
 gsap.registerPlugin(Draggable);
 gsap.registerPlugin(CustomEase);
 
-const Emblem = document.getElementById('Emblem');
+const Kern = document.getElementById('Kern');
 
 const Willkommen = document.getElementById('Willkommen');
 const Anleitung = document.getElementById('Anleitung');
@@ -11,6 +11,10 @@ const Rad = document.getElementById('Rad');
 const Griff = document.getElementById('Griff');
 
 const Digital = document.getElementById('Digital');
+
+
+
+let Hoehe = Kern.clientHeight/2;
 
 
 
@@ -34,9 +38,13 @@ window.addEventListener('DOMContentLoaded', function() {
 	} );
 
 window.addEventListener( 'resize', function() {  
+
 	if( window.innerHeight < window.innerWidth ) {  Rad.style.height = '40%'; Rad.style.width= '';  }
 	if( window.innerHeight > window.innerWidth ) {  Rad.style.height = ''; Rad.style.width= '80%';  }
-	GriffBereiten();  } );
+
+	GriffBereiten(); // Größe Rad entsprechend aktualisieren  
+
+	Hoehe = Kern.clientHeight/2;  } );
 
 window.addEventListener( 'wheel', function() {  Input(); });
 window.addEventListener( 'touchstart', function() {  Input(); });
@@ -59,27 +67,40 @@ gsap.set( '#Griff', {
 	top: '50%'
 } )
 
+let RadAnhebenID = 0;
+
 const Auswaehlen = Draggable.create(
 
 	'#Griff', 
 	{	type: 'rotation',
-		onPress: function() {
-			this.startDrag()},
-		onDragStart: function() {
-			gsap.to( '#RadSchatten', { opacity: 0 });
-			gsap.to( '#RadSchattenWeit', { opacity: 1 });
-			if( window.innerHeight < window.innerWidth ) {  gsap.to( Rad, {  height: '41%'  } ); }
-			if( window.innerHeight > window.innerWidth ) {  gsap.to( Rad, {  width: '82%'  } );  }  },
+		onPress: function() {  
+			RadAnhebenID = setInterval( RadAnheben, 100 ); },
 		onDrag: function() {  
-			RadDrehen(this.rotation);  },
+			RadDrehen(this.rotation); },
 		onRelease: function() {  
-			gsap.to( '#RadSchatten', { opacity: 1 });
-			gsap.to( '#RadSchattenWeit', { opacity: 0 });
-			if( window.innerHeight < window.innerWidth ) {  gsap.to( Rad, {  height: '40%', duration: 2  } ); }
-			if( window.innerHeight > window.innerWidth ) {  gsap.to( Rad, {  width: '80%', duration: 2  } );  }
-			RadLoslassen();  }
+			if( RadAnhebenID != -1 ) clearInterval( RadAnhebenID );
+			gsap.to( '#RadSchatten', { opacity: 1, duration: 2  });
+			gsap.to( '#RadSchattenWeit', { opacity: 0, duration: 2  });
+			if( window.innerHeight < window.innerWidth ) {  gsap.to( Rad, { height: '40%', duration: 2 } ); }
+			if( window.innerHeight > window.innerWidth ) {  gsap.to( Rad, { width: '80%', duration: 2 } );  }
+			RadLoslassen();
+			this.endDrag();
+		},
 	}
 );
+
+function RadAnheben() {
+
+	gsap.to( '#RadSchatten', { opacity: 0 });
+	gsap.to( '#RadSchattenWeit', { opacity: 1 });
+	if( window.innerHeight < window.innerWidth && Rad.style.height != '41%' ) {  gsap.to( Rad, { height: '41%' } );  } 
+	if( window.innerHeight > window.innerWidth && Rad.style.width != '82%' ) {  gsap.to( Rad, { width: '82%' } );  }  
+  if( window.innerHeight < window.innerWidth && Rad.style.height == '41%' ) {  gsap.set( Rad, { height: '41%' } ); clearInterval( RadAnhebenID );  } 
+	if( window.innerHeight > window.innerWidth && Rad.style.width == '82%' ) {  gsap.set( Rad, { width: '82%' } ); clearInterval( RadAnhebenID );  }  
+}
+
+
+
 
 
 
@@ -89,7 +110,7 @@ function Input(){
 		console.log( 'Anleitung wird abgebrochen' );
 		Begruessung.seek(11);
 		gsap.to( '.Sterne', {
-				opacity: 0.1,
+				opacity: 0.15,
 				duration: 2,
 			} );
 		gsap.to( '#RadSchatten', {
@@ -112,15 +133,13 @@ function Input(){
 let AnleitungLaeuft = 0;
 const Begruessung = gsap.timeline( {
 		paused: true, 
-		onStart: function() {  
-			if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-			window.scrollTo(0, (2000 + screen.availHeight/2));  } else {  window.scrollTo(0, (2000 + window.innerHeight/2));  }
+		onStart: function() {  window.scrollTo(0, (2000 + Kern.clientHeight/4));
 		}
 
 } )
 
 Begruessung
-
+/*
 		.set( '#Willkommen', {
 				opacity: 1,
 				onComplete: function() {
@@ -138,10 +157,10 @@ Begruessung
 				onComplete: function() {  
 					console.log( 'Begruessung ist abgeschlossen' );
 					Willkommen.style.display = 'none';  }
-			} )
+			} )/*/
 	.to( '#Rad', {
 			opacity: 1, duration: 2
-		} )
+		} )/*
 	.to( '#Anleitung', {
 			opacity: 1,
 			delay: -1,
@@ -160,17 +179,21 @@ Begruessung
 				onComplete: function() {  
 					console.log( 'Anleitung ist abgeschlossen');
 					AnleitungLaeuft = 0; Anleitung.style.display = 'none'; }
-			} )
+			} )/*/
 	.to(
 		'.Sterne', {
 			opacity: 0.1,
 			duration: 5,
 			delay: -6
 		} )
-	.to( ['#Rad','#RadSchatten'], {
+	.to( '#RadSchatten', {
 			opacity: 1,
 			duration: 2,
 		}, '<' );
+
+
+					Willkommen.style.display = 'none';
+
 
 
 let Grad = 0;
@@ -244,21 +267,18 @@ let DrehungRelativZuSenke = 0;
 let GradAkuteSternDrehung = 0;
 let RadRotation = 0;
 let Senke = 0; let Schwelle = 55;
-let SternenSenke = 0; let SternenSchwelle = 0;
+let AnteilLose = 0; // im Uhrzeigersinn aufwärts
 
-function RadDrehen(Rotation) {
+function RadDrehen(GriffRotation) {
 
-			DrehungRelativZuSenke = Rotation - Senke;
+			DrehungRelativZuSenke = GriffRotation - Senke;
 
 				let Lose = Senke + DrehungRelativZuSenke;
-				let SterneLose = SternenSenke + DrehungRelativZuSenke/Schwelle*SternenSchwelle;
 				let Gebremst = 0;
-				let SterneGebremst = 0;
 
 			if( DrehungRelativZuSenke < -Schwelle ){
  
 				Senke -= Schwelle;
-				SternenSenke -= 2*SternenSchwelle;
 
 				if( Titel == 2 ) {  Schwelle = 70;  } else{  Schwelle = 55;  }
 
@@ -269,7 +289,6 @@ function RadDrehen(Rotation) {
 			if( DrehungRelativZuSenke > Schwelle ){
 
 				Senke += Schwelle;
-				SternenSenke += 2*SternenSchwelle;
 
 				if( Titel == 0 ) {  Schwelle = 70;  } else{  Schwelle = 55;  }
 
@@ -280,33 +299,33 @@ function RadDrehen(Rotation) {
 
 			if( DrehungRelativZuSenke < -1 ){
 
-				if( Titel == 0 ) SternenSchwelle = 15;
-				if( Titel == 1 ) SternenSchwelle = 9;
-				if( Titel == 2 ) SternenSchwelle = 6;
- 
 				Gebremst = Senke - Math.log( -DrehungRelativZuSenke );
 
-				SterneGebremst = SternenSenke - Math.log( -DrehungRelativZuSenke/Schwelle*SternenSchwelle );
+				AnteilLose = 1 +( DrehungRelativZuSenke +30 ) / ( Schwelle -30 ) / 2
 
 			} if ( DrehungRelativZuSenke > 1 ){
 
-				if( Titel == 0 ) SternenSchwelle = 9;
-				if( Titel == 1 ) SternenSchwelle = 6;
-				if( Titel == 2 ) SternenSchwelle = 15;
-
 				Gebremst = Senke + Math.log( DrehungRelativZuSenke );
 
-				SterneGebremst = SternenSenke + Math.log( DrehungRelativZuSenke/Schwelle*SternenSchwelle );
+				AnteilLose = ( DrehungRelativZuSenke -30 ) / ( Schwelle -30 ) / 2
 			}
 
 			if( DrehungRelativZuSenke > 30 || DrehungRelativZuSenke < -30 ) {
-				RadRotation = Lose;
-				gsap.to( ['#Rad','#RadSchatten', '#RadSchattenWeit'], { rotation: Lose } );
-				gsap.to( '#SterneA', { rotation: SterneLose } );  }
+				RadRotation = Rad.style.transform;
+				RadRotation = RadRotation.split('(');
+				RadRotation = RadRotation[RadRotation.length-1].replace( 'deg)', '' );
+
+				if( Math.round(RadRotation) == Math.round(GriffRotation) ) {  RadGeschwindigkeit = 0.1  };
+				gsap.to( ['#Rad','#RadSchatten', '#RadSchattenWeit'], { rotation: GriffRotation, duration: RadGeschwindigkeit,
+						onComplete: function() {  if( Math.round(RadRotation) == Math.round(GriffRotation) ) {  RadGeschwindigkeit = 0.1  };  } } );
+				/*gsap.to( '#SterneA', { rotation: SterneLose } ); */ }
 			else if( DrehungRelativZuSenke > 1 || DrehungRelativZuSenke < -1 ) { 
-				RadRotation = Gebremst;
-				gsap.to( ['#Rad','#RadSchatten', '#RadSchattenWeit'], { rotation: Gebremst } );
-				gsap.to( '#SterneA', { rotation: SterneGebremst } );  }
+				gsap.to( ['#Rad','#RadSchatten', '#RadSchattenWeit'], { rotation: Gebremst, duration: 0.75 } );
+				RadGeschwindigkeit = 0.75;
+				/*gsap.to( '#SterneA', { rotation: SterneGebremst } ); */ }
+
+
+			console.log( AnteilLose +' ' +Titel +' ' +DrehungRelativZuSenke +' ' +Senke +' ' +Schwelle);
 }
 
 function RadLoslassen() {
@@ -314,13 +333,8 @@ function RadLoslassen() {
 			gsap.to( ['#Rad','#RadSchatten', '#RadSchattenWeit', '#Griff'], {  
 				rotation: Senke, 
 				ease: CustomEase.create("custom", "M0,0 C0,0 0.454,0.093 0.586,0.45 0.702,0.764 0.651,0.937 0.682,0.978 0.732,1.06 0.79,1.012 0.89,1 0.952,0.99 1,1 1,1"), 
-				duration: 1.4,
-				onComplete: function() {  
-					if( Senke >= 360 || Senke <= -360 ){  Senke = Senke%360  };
-					gsap.set ( ['#Rad','#RadSchatten', '#RadSchattenWeit', '#Griff'], {  rotation: Senke, } );
-					RadRotation = Senke;
-				}
-			} );
+				duration: 1.4
+			} );/*
 			gsap.to( '#SterneA', {
 				rotation: SternenSenke, 
 				ease: 'power', 
@@ -329,7 +343,7 @@ function RadLoslassen() {
 					if( SternenSenke >= 60 || SternenSenke <= 60 ){  SternenSenke = SternenSenke%60  };
 					gsap.set ( '#SterneA', {  rotation: SternenSenke, } );
 				}
-			})
+			})*/
 }
 
 

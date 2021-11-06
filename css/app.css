@@ -64,7 +64,7 @@
 		}
 		#Anleitung {
 			z-index: 0;
-			transform: translate3d(-50%, -51%, 0 );
+			transform: translate3d(-50%, -51%, 0 ); /* 51% für ideales alignment */
 			position: fixed;
 		}
 
@@ -144,13 +144,7 @@
 			height: 150%;
 		}
 
-		#Rad {
-			height: 40%;
-		}
-		#RadSchatten {
-			height: 40%;
-		}
-		#RadSchattenWeit {
+		#Rad, #RadSchatten, #RadSchattenWeit {
 			height: 40%;
 		}
 
@@ -177,13 +171,7 @@
 			width: 150%;
 		}
 
-		#Rad {
-			width: 80%;
-		}
-		#RadSchatten {
-			width: 80%;
-		}
-		#RadSchattenWeit {
+		#Rad, #RadSchatten, #RadSchattenWeit {
 			width: 80%;
 		}
 
