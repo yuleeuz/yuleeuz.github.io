@@ -301,13 +301,13 @@ function RadDrehen(GriffRotation) {
 
 				Gebremst = Senke - Math.log( -DrehungRelativZuSenke );
 
-				AnteilLose = 1 +( DrehungRelativZuSenke +30 ) / ( Schwelle -30 ) / 2
+				AnteilLose = 1 +( DrehungRelativZuSenke +30 ) / ( Schwelle -30 ) / 2;
 
 			} if ( DrehungRelativZuSenke > 1 ){
 
 				Gebremst = Senke + Math.log( DrehungRelativZuSenke );
 
-				AnteilLose = ( DrehungRelativZuSenke -30 ) / ( Schwelle -30 ) / 2
+				AnteilLose = ( DrehungRelativZuSenke -30 ) / ( Schwelle -30 ) / 2;
 			}
 
 			if( DrehungRelativZuSenke > 30 || DrehungRelativZuSenke < -30 ) {
@@ -315,9 +315,8 @@ function RadDrehen(GriffRotation) {
 				RadRotation = RadRotation.split('(');
 				RadRotation = RadRotation[RadRotation.length-1].replace( 'deg)', '' );
 
-				if( Math.round(RadRotation) == Math.round(GriffRotation) ) {  RadGeschwindigkeit = 0.1  };
-				gsap.to( ['#Rad','#RadSchatten', '#RadSchattenWeit'], { rotation: GriffRotation, duration: RadGeschwindigkeit,
-						onComplete: function() {  if( Math.round(RadRotation) == Math.round(GriffRotation) ) {  RadGeschwindigkeit = 0.1  };  } } );
+				if( Math.round(RadRotation) == Math.round(GriffRotation) ) {  gsap.killTweensOf( ['#Rad','#RadSchatten', '#RadSchattenWeit'] ); RadGeschwindigkeit = 0.1  };
+				gsap.to( ['#Rad','#RadSchatten', '#RadSchattenWeit'], { rotation: GriffRotation, duration: RadGeschwindigkeit } );
 				/*gsap.to( '#SterneA', { rotation: SterneLose } ); */ }
 			else if( DrehungRelativZuSenke > 1 || DrehungRelativZuSenke < -1 ) { 
 				gsap.to( ['#Rad','#RadSchatten', '#RadSchattenWeit'], { rotation: Gebremst, duration: 0.75 } );
